@@ -1,0 +1,5 @@
+WARNING DAGGEN_0523: "The source is compiled without the -dbg switch. Line breakpoints and assertion debug will not be available."
+MESSAGE "File: E:\GitHub\ece443Final\ece443Final\ece443FinalProject\Processor\src\registerFile.vhd" 
+MESSAGE "Compile Entity "registerFile"" 
+MESSAGE "Compile Architecture "behavioral" of Entity "registerFile"" 
+SUCCESS "Compile success 0 Errors 0 Warnings  Analysis time :  47.0 [ms]" 

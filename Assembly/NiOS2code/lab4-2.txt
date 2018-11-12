@@ -1,0 +1,72 @@
+.equ LIST_FILE, 0x1000 #MEMORY LOCATION OF LIST
+.text
+.global main
+
+main: 
+	
+	movia r2, LIST_FILE
+	ldw r3 , 0(r2)		#number of words in list
+	addi r4, r2, 4		#address of actual data
+	 
+	movia sp, 0x01FFFFFC #initialize stack pointer
+	subi sp, sp, 4
+	stw r3, 0(sp)		#save N to stack
+	subi sp, sp, 4
+	stw r4, 0 (sp)		#save data address to stack
+	
+	call sort
+	
+	ldw r3, 0(sp)		#N
+	addi sp, sp , 4		#pop
+	
+	ldw r2, 0(sp)		#address of list
+	addi sp, sp , 4		#pop
+
+	sorted:
+		br sorted
+	
+
+
+	
+sort:
+	#############  stack manipulation
+	
+	ldw r2, 0(sp)		#address of elements
+	addi sp, sp , 4		#pop
+	
+	ldw r3, 0(sp)		#number of elements in list
+	addi sp, sp , 4		#pop
+	
+	mov r10, r2			#load in registers in order to restore 
+	mov r11, r3			#		  at the end of the subroutine
+	
+	mov r4, r2
+		
+	############   sorting algorithm
+	subi r4, r3, 1		#counter (ex. 19 array elements -> 18 comparisons)
+	
+	loop1:
+	
+		mov r5, r4
+		mov r6, r2		# r2 is iterator 1 of list
+		addi r7, r6, 4		# r7 is iterator 2 of list 
+		loop2:
+			ldw r8, 0(r6)
+			ldw r9, 0(r7)
+			bge r8, r9, skip
+				stw r9, 0(r6)
+				stw r8, 0(r7)	
+			skip:
+			addi r6, r6, 4
+			addi r7, r7, 4
+			subi r5, r5, 1
+		bne r5, r0, loop2
+		
+		subi r4, r4, 1
+	bne r4, r0,loop1
+	
+	# reload original parameters to stack
+	stw r10, 0(sp)		#save address to stack
+	subi sp, sp, 4		#make room on stack
+	stw r11, 0 (sp)		#save N to stack
+	ret

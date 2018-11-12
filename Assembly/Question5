@@ -1,0 +1,14 @@
+#Question 5
+la $s0, 0x10010000 #This is the base address being used
+li $s1, 0x1
+li $t1, 0x1 #make register $t1 = 1 because we multiply
+la $s2, ($s0)
+go:
+	beq $s1,10,END
+	lw $t1, ($s2)
+	mul $t1, $t1,8
+	add $s2,$s2,4
+	sw $t1, ($s2)
+	addi $s1,$s1,1
+	j go
+END:
